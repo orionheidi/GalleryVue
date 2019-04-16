@@ -21,6 +21,17 @@ class Auth {
     }
     }
 
+    async create(user){
+        try{
+        const response = await axios.post('http://localhost:8000/api/register',
+            user
+        )
+        console.log(response)
+    }catch(error){
+        console.log(error)
+    }
+    }
+
     isAuthenticated (){
         return !!localStorage.getItem('token')
     }

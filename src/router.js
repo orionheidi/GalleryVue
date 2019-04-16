@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 import AllGalleries from './components/AllGalleries.vue'
 import AppLogin from '@/components/AppLogin'
+import AppRegister from '@/components/AppRegister'
 
 Vue.use(VueRouter)
 
@@ -13,6 +14,7 @@ export const router = new VueRouter({
       meta:{ requestAuth:true}
       },
       { path: '/login', component:AppLogin,meta:{ requestAuth:true} },
+      { path: '/register', component:AppRegister  },
     ] 
   })
 

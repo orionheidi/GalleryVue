@@ -63,7 +63,7 @@ export default {
         this.errors.push('Password required.');
         }
 
-        this.$router.push('/')
+         this.$router.push('/')
         }
        
     },
