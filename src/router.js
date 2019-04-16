@@ -12,7 +12,7 @@ export const router = new VueRouter({
       { path: '/', component: AllGalleries,
       meta:{ requestAuth:true}
       },
-      { path: '/login', component:AppLogin },
+      { path: '/login', component:AppLogin,meta:{ requestAuth:true} },
     ] 
   })
 
