@@ -8,17 +8,18 @@ class Auth {
         }
     }
     async login(credencials){
-        try{
+        // try{
         const response = await axios.post('http://localhost:8000/api/auth/login',
             credencials
         )
         const token = response.data.access_token
         localStorage.setItem('token',token)
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-        console.log(response)
-    }catch(error){
-        console.log(error)
-    }
+        this.$router.push('/')
+        // console.log(response)
+    // }catch(error){
+    //     console.log(error)
+    // }
     }
 
     async create(user){

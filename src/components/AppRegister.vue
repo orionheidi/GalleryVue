@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import {mapActions,mapGetters} from 'vuex'
 import {authService} from '@/services/Auth'
 
 export default {

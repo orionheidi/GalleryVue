@@ -2,12 +2,12 @@
 <div>
     <br>
     <form @submit.prevent="handleLogin">
-    <p v-if="errors.length">
+    <!-- <p v-if="errors.length">
         <b>Please correct the following error(s):</b>
         <ul>
         <li v-for="error in errors" :key="error"> {{ error }}</li>
         </ul>
-    </p>
+    </p> -->
      <div class="form-group row">
         <label for="text" class="col-1 col-form-label">Email</label>
         <div class="col-8">
@@ -31,43 +31,33 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import {mapActions,mapGetters} from 'vuex';
 export default {
     data(){
      return {
-            errors: [],
             password:'',
             email:''
         }
     },
+      computed:{
+    ...mapGetters(['errors']),
+    },
     methods:{
     ...mapActions(['login']),
-
     async handleLogin(){
-
         await this.login({
             email:this.email,
             password:this.password
         })
-    
-        if (this.email && this.password) {
-        return true;
+        if(this.errors){
+            alert('Bed credentials.');
+            return;
         }
-
-        this.errors = [];
-
-        if (!this.email) {
-        this.errors.push('Email required.');
+        else if(!this.errors){
+             this.$router.push('/')
         }
-        if (!this.age) {
-        this.errors.push('Password required.');
-        }
-
-         this.$router.push('/')
-        }
-       
+        }      
     },
-
         beforeRouteEnter(to,from,next){
         next(komponentaBuducnosti => {
         komponentaBuducnosti.email ='rkuphal@example.net'
@@ -77,5 +67,4 @@ export default {
 </script>
 
 <style>
-
 </style>
