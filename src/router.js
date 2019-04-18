@@ -14,20 +14,16 @@ Vue.use(VueRouter)
 export const router = new VueRouter({
     mode: 'history',
     routes: [
-      { path: '/', component: AllGalleries,
-      meta:{ requestAuth:true}
-      },
-    //   { path: '/my-galleries/:id', component: MyGalleries, name: 'my-galleries',
-    //   meta:{ requestAuth:true}
-    //  },
-      { path: '/login', component:AppLogin,meta:{ requestAuth:true} },
-      { path: '/register', component:AppRegister  },
-      { path: '/galleries/:id', component: SingleGallery, name: 'single-gallery',
+      { path: '/', component: AllGalleries },
+      { path: '/my-galleries', component: MyGalleries, name: 'my-galleries',
       meta:{ requestAuth:true}
      },
+      { path: '/login', component:AppLogin },
+      { path: '/register', component:AppRegister},
+      { path: '/galleries/:id', component: SingleGallery, name: 'single-gallery'
+     },
 
-     { path: '/authors/:id', component: Author, name: 'author',
-     meta:{ requestAuth:true}
+     { path: '/authors/:id', component: Author, name: 'author'
     },
     { path: '/create', component: AddGallery,
     meta:{ requestAuth:true}

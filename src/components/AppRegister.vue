@@ -1,13 +1,5 @@
 <template>
     <div>
-        <br>
-             <div class="alert alert-danger" v-if="errors.length > 0">
-                <ul>
-                    <li v-for="error in errors" :key="error.id">
-                        Invalid data {{ error }}
-                    </li>
-                </ul>
-            </div>
         <form @submit.prevent="handleRegister">
          <div class="form-group row">
             <label for="text" class="col-2 col-form-label">First Name</label>
@@ -48,13 +40,17 @@
             <button type="submit" class="btn btn-success">Register</button>
         </div>
         </div>
-     
+           <div class="alert alert-danger" v-if="errors.length">
+            <ul>
+                <li v-for="error in errors" :key="error.id">{{ error }}</li>           
+            </ul>
+        </div>     
         </form> 
     </div>
 </template>
 
 <script>
-import {mapActions,mapGetters} from 'vuex'
+import {mapActions,mapGetters} from 'vuex';
 import {authService} from '@/services/Auth'
 
 export default {
@@ -67,19 +63,51 @@ export default {
                 password_confirmation:'',
                 terms_and_conditions:''
             },
+             errors: [],
         }
 }, 
-    computed:{
-        ...mapGetters(['errors']),
-    },
     methods:{
         ...mapActions(['createUser']),
+   
+        async handleRegister(){
+           
+           await this.createUser(this.user) 
 
-        handleRegister(){
-            this.createUser(this.user) 
-            // this.$router.push('/login')
-        }       
-    },
+            this.errors = [];
+
+            if (!this.user.first_name) {
+            this.errors.push("First Name required.");
+            }
+            if (!this.user.last_name) {
+            this.errors.push("Last Name required.");
+            }
+            if (!this.user.email) {
+            this.errors.push('Email required.');
+            } else if (!this.validEmail(this.user.email)) {
+            this.errors.push('Valid email required.');
+            }
+            if (!this.user.password) {
+            this.errors.push("Password required.");
+            }
+            if (!this.user.password_confirmation) {
+            this.errors.push("Password confirmed required.");
+            }
+            if (!this.user.terms_and_conditions) {
+            this.errors.push("Tearms and conditions required.");
+            }
+
+            if (!this.errors.length) {
+                this.$router.push('/login')
+            return true;
+            }
+        //   e.preventDefault();
+                    
+            },
+            validEmail: function (email) {
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+            }                
+            },              
  
 }
 </script>

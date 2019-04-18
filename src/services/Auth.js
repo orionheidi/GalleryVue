@@ -67,30 +67,9 @@ class Auth {
         // localStorage.setItem('token',token)
         // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
         // console.log(response)
-    // }catch(error){
-    //     console.log('ovo je error')
-    //     console.log(error)
-        // if(error.response.data.errors.first_name){
-        //     this.errors.push(error.response.data.errors.first_name[0])
-        // }
-        // if(error.response.data.errors.last_name){
-        //     this.errors.push(error.response.data.errors.last_name[0])
-        // }
-        // if(error.response.data.errors.email){
-        //     this.errors.push(error.response.data.errors.email[0])
-        // }
-        // if(error.response.data.errors.password){
-        //     this.errors.push(error.response.data.errors.password[0])
-        // }
-        // if(error.response.data.errors.password_confirmation){
-        //     this.errors.push(error.response.data.errors.password_confirmation[0])
-        // }
-        // if(error.response.data.errors.terms_and_conditions){
-        //     this.errors.push(error.response.data.errors.terms_and_conditions[0])
-        // }
         
     }
-    }
-// }
+}
+
 
 export const authService = new Auth();

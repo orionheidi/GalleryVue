@@ -47,9 +47,9 @@ export default {
             error:''
         }
     },
-      computed:{
-    ...mapGetters(['errors']),
-    },
+    //   computed:{
+    // ...mapGetters(['errors']),
+    // },
     methods:{
     ...mapActions(['login']),
     async handleLogin(){
