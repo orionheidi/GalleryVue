@@ -20,7 +20,7 @@ export const GalleryModule = {
    actions:{
         async fatchGalleries(context){
         const response = await galleryService.getAll()
-        console.log(response)
+        console.log(response.data)
         context.commit('setGalleries',response.data)
     },
     async fatchGallery(context,gallery){

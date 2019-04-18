@@ -2,7 +2,7 @@ import axios from 'axios'
 
 class Gallery{
 
-    getAll(userId){
+    getAll(){
         return axios.get('http://localhost:8000/api/galleries',
         // { params: { user: userId }}
         {params: { count: 10 }}

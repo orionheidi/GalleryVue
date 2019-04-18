@@ -1,6 +1,13 @@
 <template>
     <div>
         <br>
+             <div class="alert alert-danger" v-if="errors.length > 0">
+                <ul>
+                    <li v-for="error in errors" :key="error.id">
+                        Invalid data {{ error }}
+                    </li>
+                </ul>
+            </div>
         <form @submit.prevent="handleRegister">
          <div class="form-group row">
             <label for="text" class="col-2 col-form-label">First Name</label>
@@ -40,8 +47,9 @@
             <div class="offset-4 col-8">
             <button type="submit" class="btn btn-success">Register</button>
         </div>
-    </div>
-        </form>
+        </div>
+     
+        </form> 
     </div>
 </template>
 
@@ -60,13 +68,16 @@ export default {
                 terms_and_conditions:''
             },
         }
+}, 
+    computed:{
+        ...mapGetters(['errors']),
     },
     methods:{
         ...mapActions(['createUser']),
 
         handleRegister(){
             this.createUser(this.user) 
-            this.$router.push('/')
+            // this.$router.push('/login')
         }       
     },
  

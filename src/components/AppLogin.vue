@@ -25,6 +25,13 @@
         <button type="submit" class="btn btn-success">Login</button>
         </div>
     </div>
+    <div class="alert alert-danger" v-if="error">
+            <ul>
+                <!-- <li v-for="error in errors" :key="error.id"> -->
+                    Bad credentials {{ error }}
+                <!-- </li> -->
+            </ul>
+        </div>
     </form>
 </div>
 
@@ -36,7 +43,8 @@ export default {
     data(){
      return {
             password:'',
-            email:''
+            email:'',
+            error:''
         }
     },
       computed:{
@@ -45,22 +53,24 @@ export default {
     methods:{
     ...mapActions(['login']),
     async handleLogin(){
+     try{
         await this.login({
             email:this.email,
             password:this.password
         })
-        if(this.errors){
-            alert('Bed credentials.');
-            return;
-        }
-        else if(!this.errors){
-             this.$router.push('/')
-        }
-        }      
+
+            this.$router.push('/')
+        
+     }catch(e){
+         const error = JSON.parse(e.request.response)
+         this.error = error.error
+     }
+
+        },    
     },
         beforeRouteEnter(to,from,next){
         next(komponentaBuducnosti => {
-        komponentaBuducnosti.email ='rkuphal@example.net'
+        komponentaBuducnosti.email ='virgie95@example.net'
     })
         }
 }
