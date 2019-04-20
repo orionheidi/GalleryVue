@@ -1,13 +1,6 @@
 <template>
     <div>
         <br>
-             <div class="alert alert-danger" v-if="errors.length > 0">
-                <ul>
-                    <li v-for="error in errors" :key="error.id">
-                        Invalid data {{ error }}
-                    </li>
-                </ul>
-            </div>
         <form @submit.prevent="handleCreate">
          <div class="form-group row">
             <label for="text" class="col-2 col-form-label">Name of Gallery</label>
@@ -20,16 +13,20 @@
             <div class="col-8">
             <input type="text" v-model="gallery.description" class="form-control" />
             </div>
-        </div>
-        <div class="form-group row">
-            <label for="text" class="col-2 col-form-label">Email</label>
+        </div>   
+        <div class="form-group row" v-for="(photo,index) in gallery.photos" :key="index">
+            <label for="text" class="col-2 col-form-label">Photo URL</label>
             <div class="col-8">
-            <input type="text" v-model="user.email" class="form-control" />
+            <input type="text" v-model="gallery.photos[index]" class="form-control" />
             </div>
         </div>
-       
-     
+          <div class="form-group row">
+            <div class="offset-4 col-8">
+            <button type="submit" class="btn btn-success">Add Gallery</button>
+        </div>
+        </div>
         </form> 
+        <button class="btn btn-dark" @click="addUrl()">+ URL</button>
     </div>
 </template>
 
@@ -43,20 +40,21 @@ export default {
              gallery:{
                 name:'',
                 description:'',
-                photos:{}
+                photos:['']  
             },
         }
 }, 
-    computed:{
-        ...mapGetters(['errors']),
-    },
     methods:{
-        ...mapActions(['createGallery']),
+        ...mapActions(['createGallery','createGalleryPhoto']),
 
         handleCreate(){
-            this.createGallery(this.gallery) 
-            // this.$router.push('/login')
-        }       
+            this.createGallery(this.gallery)
+            this.$router.push('/my-galleries')
+        },
+        
+        addUrl() {
+            this.gallery.photos.push('');
+        },
     },
  
 }

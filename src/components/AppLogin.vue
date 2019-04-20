@@ -62,6 +62,7 @@ export default {
             this.$router.push('/')
         
      }catch(e){
+         console.log('sta ti je')
          const error = JSON.parse(e.request.response)
          this.error = error.error
      }

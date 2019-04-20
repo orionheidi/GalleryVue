@@ -59,6 +59,7 @@ export default {
              user:{
                 first_name:'',
                 last_name:'',
+                email:'',
                 password:'',
                 password_confirmation:'',
                 terms_and_conditions:''

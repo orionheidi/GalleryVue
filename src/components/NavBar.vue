@@ -5,28 +5,33 @@
       to="/">
       All Galleries
     </router-link>
+     <div  v-if="IsItLogin">
     <router-link
       class="navbar-brand"
       to="/my-galleries">
       My Galleries
     </router-link> 
-     <!-- <router-link
+     </div>
+    <div  v-if="IsItLogin">
+     <router-link
       class="navbar-brand"
       to="/create">
       Add Gallery
-    </router-link> -->
-    <div  v-if="IsItLogin">
+    </router-link>
+    </div>
+    <div  v-if="!IsItLogin">
           <router-link class="navbar-brand" to="/login">Login</router-link>
     </div>
-     <div  v-if="IsItLogin">
+     <div  v-if="!IsItLogin">
           <router-link class="navbar-brand"  to="/register">Register</router-link>
     </div>
      <!-- <button class="btn btn-dark" @click="login">Login</button> 
     <button class="btn btn-dark" @click="register">Register</button>  -->
      <div  v-if="IsItLogin">
-          <router-link class="navbar-brand" to="/login" @click="handleLogout">Logout</router-link>
-    </div>
-    <!-- <button class="btn btn-dark" @click="handleLogout" >Logout</button>  -->
+          <!-- <router-link class="navbar-brand" @click="handleLogout">Logout</router-link> -->
+    
+    <button class="btn btn-dark" @click="handleLogout" >Logout</button>
+     </div>
   </nav>
 </template>
 
@@ -34,12 +39,18 @@
 import {mapActions,mapGetters} from 'vuex';
 import AppRegister from '@/components/AppRegister'
 import AppLogin from '@/components/AppLogin'
+import {authService} from './../services/Auth'
 export default {
   name: 'NavBar',
   components:{
     AppRegister,
     AppLogin
   },
+  //  data() {
+  //   return {
+  //     IsItLogin: true
+  //   };
+  // },
 
   computed:{
     ...mapGetters(['IsItLogin']),
@@ -51,8 +62,12 @@ export default {
     handleLogout(){
     this.logout()
     this.$router.push('login')
-    this. IsItLogin = false;
+    // this. IsItLogin = false;
     },
-  }
+  },
+
+  //  created() {
+  //   this.IsItLogin = authService.isAuthenticated();
+  // },
 }
 </script>

@@ -7,12 +7,11 @@
         <h5 class="card-title">{{ gallery.name }}</h5>
            <h5 class="card-title"> {{ gallery.description }} </h5>
           <div v-for="photo in gallery.photos" :key="photo.id" id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img class="d-block w-100" :src="photo.url" alt="First slide">
-            </div>
-          </div>
-          </div>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img class="d-block w-100" :src="photo.url">
+              </div>
+            </div>    
           <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
@@ -21,8 +20,9 @@
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
           </a>
+          </div>
+        </div>
 </div>
-    </div>
     </div>
 
 </template>

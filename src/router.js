@@ -8,6 +8,7 @@ import AppRegister from '@/components/AppRegister'
 import Author from '@/components/Author'
 import SingleGallery from '@/components/SingleGallery'
 import AddGallery from '@/components/AddGallery'
+import { authService } from './services/Auth';
 
 Vue.use(VueRouter)
 
@@ -16,7 +17,7 @@ export const router = new VueRouter({
     routes: [
       { path: '/', component: AllGalleries },
       { path: '/my-galleries', component: MyGalleries, name: 'my-galleries',
-      meta:{ requestAuth:true}
+      meta:{ requiresAuth:true}
      },
       { path: '/login', component:AppLogin },
       { path: '/register', component:AppRegister},
@@ -26,15 +27,24 @@ export const router = new VueRouter({
      { path: '/authors/:id', component: Author, name: 'author'
     },
     { path: '/create', component: AddGallery,
-    meta:{ requestAuth:true}
+    meta:{ requiresAuth:true}
     },
     ] 
   })
 
-  router.beforeEach((to,form,next)=>{
-    if(to.meta.requiresAuth && !authService.isAuthenticated){
-      next('/login')
-    }else{
-      next()
+  router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+      // this route requires auth, check if logged in
+      // if not, redirect to login page.
+      if (!authService.isAuthenticated()) {
+        next({
+          path: '/login',
+          query: { redirect: to.fullPath }
+        })
+      } else {
+        next()
+      }
+    } else {
+      next() // make sure to always call next()!
     }
   })

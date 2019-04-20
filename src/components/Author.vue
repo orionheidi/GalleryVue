@@ -4,11 +4,14 @@
     <hr/>
     <div class="card mb-3" style="width: 18rem;">
       <div class="card-body">
-        <h5 class="card-title">{{ user.first_name }}</h5>
-        <h5 class="card-title">{{ user.last_name }}</h5>
-        <div v-for="gallery in user.gallery" :key="gallery.id">
-          <h5 class="card-title">{{ gallery.name }}</h5>
-          <img :src="gallery.photos.url">
+          User first name: <h5 class="card-title">{{ user.first_name }}</h5>
+          User last name: <h5 class="card-title">{{ user.last_name }}</h5>
+          <div v-for="gallery in user.galleries" :key="gallery.id">
+            Gallery id: <h5 class="card-title">{{ gallery.id }}</h5>
+            Gallery name: <h5 class="card-title">{{ gallery.name }}</h5>
+             <div v-for="photo in gallery.photos" :key="photo.id">
+            <img :src="photo.url">
+         </div>
         </div>
         </div>
     </div>
