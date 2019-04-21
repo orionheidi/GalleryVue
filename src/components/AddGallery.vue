@@ -20,13 +20,15 @@
             <input type="text" v-model="gallery.photos[index]" class="form-control" />
             </div>
         </div>
-          <div class="form-group row">
+        <div class="form-group row">
             <div class="offset-4 col-8">
             <button type="submit" class="btn btn-success">Add Gallery</button>
+            <button @click="cancle" class="btn btn-success">Cancle</button>
         </div>
         </div>
         </form> 
         <button class="btn btn-dark" @click="addUrl()">+ URL</button>
+         <button class="btn btn-dark" v-if="permitedDeleting" @click="deleteUrl(index)">- URL</button>
     </div>
 </template>
 
@@ -44,8 +46,13 @@ export default {
             },
         }
 }, 
+computed: {
+    permitedDeleting() {
+      return this.gallery.photos.length > 1;
+    }
+  },
     methods:{
-        ...mapActions(['createGallery','createGalleryPhoto']),
+        ...mapActions(['createGallery']),
 
         handleCreate(){
             this.createGallery(this.gallery)
@@ -55,6 +62,14 @@ export default {
         addUrl() {
             this.gallery.photos.push('');
         },
+        deleteUrl(index){
+            if(this.permitedDeleting){
+            this.gallery.photos.splice(index,1)
+            }
+        },
+        cancle(){
+            this.$router.push('/my-galleries')
+        }
     },
  
 }

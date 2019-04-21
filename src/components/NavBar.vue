@@ -25,11 +25,7 @@
      <div  v-if="!IsItLogin">
           <router-link class="navbar-brand"  to="/register">Register</router-link>
     </div>
-     <!-- <button class="btn btn-dark" @click="login">Login</button> 
-    <button class="btn btn-dark" @click="register">Register</button>  -->
      <div  v-if="IsItLogin">
-          <!-- <router-link class="navbar-brand" @click="handleLogout">Logout</router-link> -->
-    
     <button class="btn btn-dark" @click="handleLogout" >Logout</button>
      </div>
   </nav>
@@ -46,11 +42,6 @@ export default {
     AppRegister,
     AppLogin
   },
-  //  data() {
-  //   return {
-  //     IsItLogin: true
-  //   };
-  // },
 
   computed:{
     ...mapGetters(['IsItLogin']),
@@ -62,12 +53,7 @@ export default {
     handleLogout(){
     this.logout()
     this.$router.push('login')
-    // this. IsItLogin = false;
     },
   },
-
-  //  created() {
-  //   this.IsItLogin = authService.isAuthenticated();
-  // },
 }
 </script>

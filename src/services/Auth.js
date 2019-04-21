@@ -36,6 +36,13 @@ class Auth {
         localStorage.removeItem('token')
         axios.post('http://localhost:8000/api/auth/logout')
     }
+
+    getAuthUser() {
+        return Http.post('http://localhost:8000/api/auth/me');
+    }
+    getUser(id) {
+        return Http.get(`http://localhost:8000/api/auth/show/${id}`);
+    }
 }
 
 

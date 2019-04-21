@@ -9,14 +9,19 @@
         <h5 class="card-title"> User:  <router-link  :to="`/authors/${gallery.user.id}`">{{gallery.user.first_name}}</router-link></h5>
         <br>
          <h5 class="card-title">Created at: {{ gallery.created_at }}</h5>
-        <div v-for="photo in gallery.photos" :key="photo.id">
-          <img :src="photo.url">
+          <img  :src="gallery.photos[0].url">
           <br>
           <br>
-        </div>
+          Comments: 
+        <div  v-for="(comment,index) in gallery.comments" :key="index">
+          Comment number:  <h5 class="card-title"> {{comment.id}}  </h5>
+          Comment text: <h5 class="card-title">  {{comment.text}}</h5>
+          User: <h5 class="card-title">  {{comment.user.first_name}}</h5>
+      </div>
         <br>
       </div>
     </div>
+    <!-- <button class="btn btn-dark" @click="loadMore">Load More</button> -->
   </div>
 </template>
 
@@ -26,17 +31,28 @@ import {mapActions, mapGetters} from 'vuex';
 export default {
   computed:{
     ...mapGetters(['galleries']),
-    // user(){
-    //         let gallerySelected = this.galleries.filter(gallery => {return gallery.user_id == this.user });
-    //         return gallerySelected;
-    // }
+  },
+    data() {
+    return {
+      // galleries: [],
+      // currentPage: 0,
+      // searchTerm: "",
+      // moreGalleries: true
+    };
   },
   methods:{
     ...mapActions(['fatchGalleries']), 
+
+    // loadMore() {
+    //   this.fatchGalleries();
+    // },
   },
-  created(){
-    this.fatchGalleries();
-  }
+    created(){
+      // this.currentPage++;
+      console.log('galeries finde')
+      this.fatchGalleries();
+      // this.moreGalleries = this.galleries.length > 0;
+    }
 
 }
 </script>

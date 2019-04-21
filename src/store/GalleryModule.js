@@ -38,10 +38,6 @@ export const GalleryModule = {
             const response = await galleryService.create(gallery)
             context.commit('addGallery',response.data)
         },
-        async createGalleryPhoto(context,gallery,photo){
-            const response = await galleryService.addPhotos(gallery,photo)
-            context.commit('addGalleryPhoto',response.data)
-        },
         async fatchGallery(context,gallery){
             const response = await galleryService.get(gallery.id)
             context.commit('setGallery',response.data)

@@ -9,9 +9,16 @@
           <div v-for="gallery in user.galleries" :key="gallery.id">
             Gallery id: <h5 class="card-title">{{ gallery.id }}</h5>
             Gallery name: <h5 class="card-title">{{ gallery.name }}</h5>
-             <div v-for="photo in gallery.photos" :key="photo.id">
-            <img :src="photo.url">
-         </div>
+            Gallery photo:
+            <div v-for="photo in gallery.photos" :key="photo.id">
+              <img  :src="photo.url">
+              <img :src="photo.created_at"> 
+          <br>
+          <br>
+        </div>
+          <div  v-for="(comment,index) in gallery.comments" :key="index">
+         Comment: <h5 class="card-title">  {{comment.id}}      {{comment.text}}</h5>
+        </div>
         </div>
         </div>
     </div>
@@ -24,7 +31,7 @@ import {userService} from '@/services/User'
 export default {
          
     computed:{
-    ...mapGetters(['user']),
+    ...mapGetters(['user','galleries']),
      },
     methods:{
     ...mapActions(['fatchUser']),
