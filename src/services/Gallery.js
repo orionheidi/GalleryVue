@@ -17,6 +17,17 @@ class Gallery{
     create(gallery){
         return axios.post('http://localhost:8000/api/galleries',gallery)
     }
+
+    // edit(gallery){
+    //     return axios.put(`http://localhost:8000/api/galleries/${gallery.id}`,gallery)
+    // }
+    
+    edit(id, gallery) {
+        return axios.put(`http://localhost:8000/api/galleries/${id}`,gallery)
+    }
+    delete(id){
+        return axios.delete(`http://localhost:8000/api/galleries/${id}`)
+    }
 }
 
 export const galleryService = new Gallery();

@@ -7,29 +7,11 @@
       <div class="card-body">
         Gallery name:<h5 class="card-title"> {{ gallery.name }}</h5>
         Gallery description:<h5 class="card-title"> {{ gallery.description }} </h5>
+         Gallery author:<h5 class="card-title"><router-link  :to="`/authors/${gallery.user.id}`"> {{ gallery.user.first_name }} {{ gallery.user.last_name }}</router-link> </h5>
+        <router-link v-if="!authUser.id == gallery.user.id" class="btn btn-success" :to="`/edit/${gallery.id}`">Edit Gallery</router-link>
+         <button v-if="!authUser.id == gallery.user.id" class="btn btn-dark" @click="OnDeleteGallery(gallery)">Delete</button>
       </div>
     </div>
-
-
-     <!-- <b-carousel
-      id="carousel-1"
-      v-model="slide"
-      :interval="5000"
-      controls
-      indicators
-      @sliding-start="onSlideStart"
-      @sliding-end="onSlideEnd"
-    >
-      <b-carousel-slide -for="photo in gallery.photos" :key="photo.id">
-        <img
-          @click="newTab(photo.url)"
-          slot="img"
-          class="d-block img-fluid w-100 cursor-pointer"
-          :src="photo.url"
-          alt="photo slot"
-        >
-      </b-carousel-slide>
-    </b-carousel> -->
 
      <b-carousel
       id="carousel-1"
@@ -58,27 +40,6 @@
 
     </b-carousel>
 
-
-           <!-- <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-          <ol class="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-          </ol>
-          <div class="carousel-inner">
-            <div class="carousel-item active" v-for="photo in gallery.photos" :key="photo.id">
-              <img class="d-block w-100"  @click="newTab(photo.url)"  :src="photo.url" alt="First slide" >
-            </div>
-          </div>
-          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
-          </div> -->
      <div  v-for="(comment,index) in gallery.comments" :key="index">
       <div class="card mb-3" >
       
@@ -127,15 +88,20 @@ export default {
     }
     },  
     computed:{
-    ...mapGetters(['gallery','authUser']),
+    ...mapGetters(['gallery','authUser','user']),
      },
     methods:{
-    ...mapActions(['fatchGallery','addComments','deleteComment', 'getAuthUser']),
+    ...mapActions(['fatchGallery','addComments','deleteComment', 'getAuthUser','deleteGallery']),
 
       OnDelete(comment){
         this.deleteComment(comment)
         let index = this.gallery.comments.findIndex(item => item.id === comment.id)
         this.gallery.comments.splice(index,1)
+    },
+
+      OnDeleteGallery(gallery){
+        this.deleteGallery(gallery)
+        this.$router.push('/my-galleries')
     },
 
     newTab(url) {

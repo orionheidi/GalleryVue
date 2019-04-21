@@ -34,7 +34,7 @@
 
 <script>
 import {mapActions,mapGetters} from 'vuex'
-
+import {galleryService} from '@/services/Gallery'
 
 export default {
     data(){
@@ -42,7 +42,7 @@ export default {
              gallery:{
                 name:'',
                 description:'',
-                photos:['']  
+                photos:[''], 
             },
         }
 }, 
@@ -52,11 +52,20 @@ computed: {
     }
   },
     methods:{
-        ...mapActions(['createGallery']),
+        ...mapActions(['createGallery','editGallery']),
 
-        handleCreate(){
-            this.createGallery(this.gallery)
+        async handleCreate(){
+            if(this.$route.params.id){
+            await this.editGallery({id:this.$route.params.id, gallery: this.gallery})
+              this.$router.push({
+                name: 'single-gallery',
+                params: { id: this.$route.params.id }
+            });
+            }else{
+            await this.createGallery(this.gallery)
             this.$router.push('/my-galleries')
+            return;
+            }
         },
         
         addUrl() {
@@ -71,6 +80,12 @@ computed: {
             this.$router.push('/my-galleries')
         }
     },
+       created(){
+            galleryService.get(this.$route.params.id)
+            console.log(this.$route.params.id)
+            this.gallery.id = this.$route.params.id
+            console.log(this.gallery.id)
+        }
  
 }
 </script>

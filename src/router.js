@@ -29,6 +29,9 @@ export const router = new VueRouter({
     { path: '/create', component: AddGallery,
     meta:{ requiresAuth:true}
     },
+    { path: '/edit/:id', component: AddGallery, name: 'edit',
+    meta:{ requestAuth:true}
+   },
     ] 
   })
 
