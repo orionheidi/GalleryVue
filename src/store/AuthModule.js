@@ -3,7 +3,7 @@ import {authService} from './../services/Auth'
 export const AuthModule = {
     state: {
         IsToken: authService.isAuthenticated(),
-        authUser: null,
+        authUser: {},
     },
     getters:{
         IsItLogin: state => state.IsToken,
@@ -23,7 +23,6 @@ export const AuthModule = {
                 context.commit('SET_DATA',{IsToken: authService.isAuthenticated()})         
       },
         logout(context){
-            console.log('loguj out')
             authService.logout()
             context.commit('SET_DATA',{IsToken:false})  
       },
@@ -33,18 +32,16 @@ export const AuthModule = {
         async getAuthUser({ commit }) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const { data } = await AuthService.getAuthUser();
+                    const { data } = await authService.getAuthUser();
                     commit('SET_AUTH_USER', data);
-                    resolve();
+                    resolve('success');
                 } catch (e) {
-                    reject();
+                    reject(e);
                 }
             })
         },
-        getUser({
-            commit
-        }, id) {
-            return AuthService.getUser(id);
+        getUser({ commit }, id) {
+            return authService.getUser(id);
         }
     },
     }

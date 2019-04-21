@@ -38,10 +38,10 @@ class Auth {
     }
 
     getAuthUser() {
-        return Http.post('http://localhost:8000/api/auth/me');
+        return axios.post('http://localhost:8000/api/auth/me');
     }
     getUser(id) {
-        return Http.get(`http://localhost:8000/api/auth/show/${id}`);
+        return axios.get(`http://localhost:8000/api/auth/show/${id}`);
     }
 }
 

@@ -31,7 +31,35 @@
       </b-carousel-slide>
     </b-carousel> -->
 
-           <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+     <b-carousel
+      id="carousel-1"
+      v-model="slide"
+      :interval="4000"
+      controls
+      indicators
+      background="#ababab"
+      img-width="1024"
+      img-height="480"
+      style="text-shadow: 1px 1px 2px #333;"
+      @sliding-start="onSlideStart"
+      @sliding-end="onSlideEnd"
+    >
+  
+      <b-carousel-slide v-for="photo in gallery.photos" :key="photo.id">
+        <img slot="img"
+          class="d-block img-fluid w-100"
+          width="1024"
+          height="480"
+          alt="image slot"
+          @click="newTab(photo.url)" 
+          :src="photo.url" 
+          >
+      </b-carousel-slide>
+
+    </b-carousel>
+
+
+           <!-- <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
           <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -50,7 +78,7 @@
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
           </a>
-          </div>
+          </div> -->
      <div  v-for="(comment,index) in gallery.comments" :key="index">
       <div class="card mb-3" >
       
@@ -60,8 +88,7 @@
          Comment created at: <h5 class="card-title"> {{comment.created_at}}</h5>
            <div class="form-group row">
             <div class="offset-4 col-8">
-            <button type="submit" @click="OnDelete(comment)" class="btn btn-dark">Delete</button>
-            <!-- v-if="userAuth.id == comment.user.id" -->
+            <button  v-if="authUser.id == comment.user.id" type="submit" @click="OnDelete(comment)" class="btn btn-dark">Delete</button>
           </div>
         </div>
         </div>
@@ -90,43 +117,57 @@ import {galleryService} from '@/services/Gallery'
 export default {
     data(){
     return{
-      
-      comment:{
+      comment: {
         text:'',
-        // 'user_id':this.authUser.id,
-        'gallery_id':this.$route.params.id
-      }
+        user_id: 0,
+        gallery_id: this.$route.params.id,
+      },
+      slide: 0,
+      sliding: null
     }
     },  
     computed:{
     ...mapGetters(['gallery','authUser']),
      },
     methods:{
-    ...mapActions(['fatchGallery','addComments','deleteComment']),
+    ...mapActions(['fatchGallery','addComments','deleteComment', 'getAuthUser']),
 
       OnDelete(comment){
-      this.deleteComment(comment)
-      // this.$router.go()
+        this.deleteComment(comment)
+        let index = this.gallery.comments.findIndex(item => item.id === comment.id)
+        this.gallery.comments.splice(index,1)
     },
 
     newTab(url) {
       var win = window.open(url, '_blank');
       win.focus();
     },
-        async handleCommentAdd() {
+    async handleCommentAdd() {
       try {
-  
-        
-        await this.addComments(this.comment);
-        console.log(this.authUser)
-        this.gallery.comments.unshift(this.comment);
-        // this.errors = {};
-        this.comment = "";
-      } catch (e) {
-        const errorsObject = JSON.parse(e.request.response);
-        this.errors = errorsObject.errors;
-      }
+          await this.getAuthUser();
+          this.comment.user_id = this.authUser.id;
+          await this.addComments(this.comment);
+          this.comment.user = { ...this.authUser }
+          this.gallery.comments.unshift(this.comment);
+
+          this.comment = {
+            user_id : 0,
+            gallery_id: this.$route.params.id,
+            text: '',
+          }
+
+        } catch (e) {
+           const errorsObject = JSON.parse(e.request.response);
+           this.errors = errorsObject.errors;
+        }
     },
+
+       onSlideStart(slide) {
+        this.sliding = true
+      },
+      onSlideEnd(slide) {
+        this.sliding = false
+      },
 
 },
     created(){
