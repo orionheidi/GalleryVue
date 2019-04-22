@@ -45,7 +45,10 @@ export const GalleryModule = {
             state.galleries = state.galleries.
             filter(gallery=>gallery.id !== id);
 
-        }
+        },
+        GET_GALLERIES(state,galleries){
+            state.galleries = galleries
+        },
         
     },
    actions:{

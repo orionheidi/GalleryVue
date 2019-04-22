@@ -71,7 +71,7 @@ export default {
     },
         beforeRouteEnter(to,from,next){
         next(komponentaBuducnosti => {
-        komponentaBuducnosti.email ='virgie95@example.net'
+        komponentaBuducnosti.email =''
     })
         }
 }

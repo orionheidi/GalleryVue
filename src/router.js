@@ -9,6 +9,7 @@ import Author from '@/components/Author'
 import SingleGallery from '@/components/SingleGallery'
 import AddGallery from '@/components/AddGallery'
 import { authService } from './services/Auth';
+import { galleryService } from './services/Gallery';
 
 Vue.use(VueRouter)
 

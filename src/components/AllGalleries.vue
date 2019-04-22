@@ -8,13 +8,13 @@
     </div>
     <div class="row" v-if="galleries.length">
       <div v-for="gallery in paginatedGalleries" :key="gallery.id" >
-          <h5 class="card-title"> Gallery number:{{gallery.id}}</h5>
-        <h5 class="card-title"> Title: <router-link  :to="`/galleries/${gallery.id}`">{{gallery.name}}</router-link> </h5>
+          <p class="card-title"> Gallery number: <br>{{gallery.id}}</h5>
+        <h5 class="card-title"> Title:<br> <router-link  :to="`/galleries/${gallery.id}`">{{gallery.name}}</router-link> </h5>
         <br>
-        <h5 class="card-title"> Author:  <router-link  :to="`/authors/${gallery.user.id}`">{{gallery.user.first_name}} {{gallery.user.last_name}}</router-link></h5>
+        <h5 class="card-title"> Author: <br> <router-link  :to="`/authors/${gallery.user.id}`">{{gallery.user.first_name}} {{gallery.user.last_name}}</router-link></h5>
         <br>
-         <h5 class="card-title">Created at: {{ gallery.created_at }}</h5>
-          <img  :src="gallery.photos[0].url">
+          <p class="card-title">Created at: <br>{{ gallery.created_at }}</p>
+          <img  :src="gallery.photos[0].url" height="200px">
           <br>
           <br>
         <br>
@@ -74,9 +74,8 @@ export default {
     }
   },
     created(){
-      console.log('galeries finde')
+      console.log('galeries')
       this.getGalleries();
-      console.log('gerovane')
     }
 
 }

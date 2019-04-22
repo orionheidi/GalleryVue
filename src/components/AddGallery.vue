@@ -18,10 +18,9 @@
             <label for="text" class="col-2 col-form-label">Photo URL</label>
             <div class="col-8">
             <input type="text" v-model="gallery.photos[index]" class="form-control" />
-                 <div v-if="numOfphotos > 1">
-            <button class="btn btn-dark" type="button" @click="moveUp(index)">UP</button>
-            <button class="btn btn-dark" type="button" @click="moveDown(index)">DOWN</button>
-    </div>
+             <br>
+             <button class="btn btn-dark" @click="moveUp(index)">Move Up</button>
+            <button class="btn btn-dark" @click="moveDown(index)">Move Down</button>
             
             </div>
         </div>
@@ -32,7 +31,13 @@
             <button @click="cancle" class="btn btn-success">Cancle</button>
         </div>
         </div>
-   
+          <!-- <div class="alert alert-danger" v-if="error">
+            <ul>
+                    Form not valid {{ error }}
+              
+            </ul>
+        </div>
+    -->
            <div class="alert alert-danger" v-if="errors.length">
             <ul>
                 <li v-for="error in errors" :key="error.id">{{ error }}</li>           
@@ -43,10 +48,6 @@
          <button class="btn btn-dark" v-if="permitedDeleting" @click="deleteUrl(index)">- URL</button>
          <br>
          <br>
-         <!-- <div v-if="numOfphotos > 1">
-            <button class="btn btn-dark" type="button" @click="moveUp(index)">UP</button>
-            <button class="btn btn-dark" type="button" @click="moveDown(index)">DOWN</button>
-    </div> -->
     <br>
     
     </div>
@@ -65,37 +66,36 @@ export default {
                 photos:[''], 
             },
             errors: [],
-            photosCount:null
+            // error:'',
         }
 }, 
 computed: {
     permitedDeleting() {
       return this.gallery.photos.length > 1;
     },
-    photosCount() {
-      return this.gallery.photos.length;
-    },
-    numOfphotos: {
-      get() {
-        return this.gallery.photos.length;
-      },
-      set(newValue) {
-        return this.nevValue;
-      }
-    }
+   
+    
   },
     methods:{
         ...mapActions(['createGallery','editGallery']),
 
         async handleCreate(){
+      
             if(this.$route.params.id){
             await this.editGallery({id:this.$route.params.id, gallery: this.gallery})
               this.$router.push({
                 name: 'single-gallery',
                 params: { id: this.$route.params.id }
             });
-            }else{
+            }
+            else{
             await this.createGallery(this.gallery)
+             this.$router.push('/my-galleries')
+            }
+                //      const error = JSON.parse(e.request.response)
+                //     this.error = error.error
+                //     alert(`Something went wrong! Your add is not valid!`)
+                // }
 
             //  this.errors = [];
 
@@ -113,41 +113,31 @@ computed: {
             // this.$router.push('/my-galleries')
             // return;
             // }
-            }
+    
         },
         
         addUrl() {
             this.gallery.photos.push('');
-             this.numOfphotos++;
         },
         deleteUrl(index){
             if(this.permitedDeleting){
             this.gallery.photos.splice(index,1)
-             this.numOfphotos--;
             }
         },
         cancle(){
             this.$router.push('/my-galleries')
         },
 
-    moveUp(index) {
-      if (index !== 0) {
-        const item = this.gallery.photos.splice(index, 1);
-        const to = this.gallery.photos.splice(index - 1, 1);
-        const before = this.gallery.photos.splice(0, index - 1);
-        const after = this.gallery.photos.splice(0, this.gallery.photos.length);
-        this.gallery.photos = [...before, ...item, ...to, ...after];
-      }
-    },
-    moveDown(index) {
-      if (index + 1 < this.gallery.photos.length) {
-        const item = this.gallery.photos.splice(index, 1);
-        const to = this.gallery.photos.splice(index, 1);
-        const before = this.gallery.photos.splice(0, index);
-        const after = this.gallery.photos.splice(0, this.gallery.photos.length);
-        this.gallery.photos = [...before, ...to, ...item, ...after];
-      }
-    }
+        moveUp (index) {
+            if (index > 0 ) {
+                this.gallery.photos.splice( index - 1, 0, this.gallery.photos.splice( index, 1 ) )
+            }
+        }, 
+        moveDown (index) {
+            if (index < this.gallery.photos.length - 1 ) {
+                this.gallery.photos.splice( index + 1, 0, this.gallery.photos.splice( index, 1 ) )
+            }
+        }, 
     },
        created(){
             galleryService.get(this.$route.params.id)

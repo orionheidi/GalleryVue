@@ -8,6 +8,7 @@
         Gallery name:<h5 class="card-title"> {{ gallery.name }}</h5>
         Gallery description:<h5 class="card-title"> {{ gallery.description }} </h5>
          Gallery author:<h5 class="card-title"><router-link  :to="`/authors/${gallery.user.id}`"> {{ gallery.user.first_name }} {{ gallery.user.last_name }}</router-link> </h5>
+        <p class="card-title">Created at: <br>{{ gallery.created_at }}</p>
         <router-link v-if="!authUser.id == gallery.user.id" class="btn btn-success" :to="`/edit/${gallery.id}`">Edit Gallery</router-link>
          <button v-if="!authUser.id == gallery.user.id" class="btn btn-dark" @click="OnDeleteGallery(gallery)">Delete</button>
       </div>

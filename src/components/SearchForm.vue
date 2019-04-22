@@ -48,10 +48,10 @@ export default {
 }
 </script>
 <style scoped>
-.search-field {
+/* .search-field {
   width: 300px;
   float: right;
-}
+} */
 .search-button {
   cursor: pointer;
 }
