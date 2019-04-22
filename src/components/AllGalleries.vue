@@ -1,8 +1,13 @@
 <template>
     <div class="card mb-3" >
     <div class="card-body" >
-
-      <div v-for="gallery in galleries" :key="gallery.id" >
+     <div class="row">
+      <div class="col-md-12">
+        <search-form @search-submitted="handleSearch"></search-form>
+      </div>
+    </div>
+    <div class="row" v-if="galleries.length">
+      <div v-for="gallery in paginatedGalleries" :key="gallery.id" >
           <h5 class="card-title"> Gallery number:{{gallery.id}}</h5>
         <h5 class="card-title"> Title: <router-link  :to="`/galleries/${gallery.id}`">{{gallery.name}}</router-link> </h5>
         <br>
@@ -12,46 +17,66 @@
           <img  :src="gallery.photos[0].url">
           <br>
           <br>
-          <!-- Comments: 
-        <div  v-for="(comment,index) in gallery.comments" :key="index">
-          Comment number:  <h5 class="card-title"> {{comment.id}}  </h5>
-          Comment text: <h5 class="card-title">  {{comment.text}}</h5>
-          User: <h5 class="card-title">  {{comment.user.first_name}}</h5>
-      </div> -->
         <br>
       </div>
     </div>
-    <!-- <button class="btn btn-dark" @click="loadMore">Load More</button> -->
+    </div>
+     <!-- <div v-else class="row">
+      <div class="col-md-12"></div>
+      <h5>Upps, there is no galleries.</h5>
+    </div> -->
+      <div class="card-body" v-if="hasMoreGalleries">
+      <button class="btn btn-dark mb-2 ml-50" @click="showMore">Load more</button>
+    </div>
   </div>
 </template>
 
 <script>
 import {mapActions, mapGetters} from 'vuex';
+import SearchForm from './SearchForm.vue';
 
 export default {
-  computed:{
-    ...mapGetters(['galleries']),
+   components: {
+    SearchForm
   },
-    data() {
-    return {
-      // galleries: [],
-      // currentPage: 0,
-      // searchTerm: "",
-      // moreGalleries: true
-    };
+  computed:{
+    ...mapGetters(['galleries','searchTerm','paginatedGalleries']),
+      hasMoreGalleries() {
+        console.log(this.paginatedGalleries.length)
+      return this.galleries.length > this.paginatedGalleries.length ? true : false
+    }
   },
   methods:{
-    ...mapActions(['fatchGalleries']), 
-
-    // loadMore() {
-    //   this.fatchGalleries();
-    // },
+    ...mapActions(['fatchGalleries','filterGalleries', 'paginateGalleries','paginationShowMore']),
+     async getGalleries() {
+      if (!this.$route.query.name) {
+        await this.fatchGalleries();
+        return;
+      }
+      await this.filterGalleries(this.$route.query.name);
+    },
+     async handleSearch(term) {
+       console.log("?")
+      this.$router.push({name: '/', query: { name: term }})
+      await this.filterGalleries(term);
+    },
+    showMore() {
+      console.log('ulazis?')
+      const currentLength = this.paginatedGalleries.length;
+      console.log(this.paginatedGalleries.length)
+      const galleriesNew = this.galleries.slice(currentLength, currentLength+10)
+      this.paginationShowMore(galleriesNew);
+    }
+  },
+  watch: {
+    searchTerm() {
+       this.filterGalleries(this.searchTerm)
+    }
   },
     created(){
-      // this.currentPage++;
       console.log('galeries finde')
-      this.fatchGalleries();
-      // this.moreGalleries = this.galleries.length > 0;
+      this.getGalleries();
+      console.log('gerovane')
     }
 
 }
